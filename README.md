@@ -114,4 +114,4 @@ python manage.py runserver
 
 ## Contributors
 
-- Md Rakibul Hassan, Dipa Barua, Md Ifthakhar Alam Shams, Saima Sharmin Shama
+- Md Rakibul Hassan, Md Tahsin Azad Shaikat, Dipa Barua, Md Ifthakhar Alam Shams, Saima Sharmin Shama

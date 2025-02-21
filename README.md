@@ -1,4 +1,4 @@
-<h1 align="center">Campus Transport Management System</h1>
+<h1 align="center">Campus Transport Management System (CTMS)</h1>
 
 Campus Transport Management System is a web-based application designed to manage campus transportation services efficiently. This system enhances campus transportation by enabling bus schedule tracking, automated Gmail notifications, QR code-based transport cards, and staff information access. Admins get a powerful dashboard to manage transport details and user data efficiently.
 

@@ -2,10 +2,8 @@
 
 Campus Transport Management System is a web-based application designed to manage campus transportation services efficiently. This system enhances campus transportation by enabling bus schedule tracking, automated Gmail notifications, QR code-based transport cards, and staff information access. Admins get a powerful dashboard to manage transport details and user data efficiently.
 
----
 
 ## Features
----
 
 ### Secure User Authentication & Role-based Access
 - Users (students, faculty, and admin) can register and log in securely.
@@ -26,10 +24,9 @@ Campus Transport Management System is a web-based application designed to manage
 ### Admin Dashboard for Comprehensive Control
 - Admins can manage routes, schedules, and users from a central panel.
 
----
 
 ## Technologies Used
----
+
 ### **Backend**
 - **Python Django**: Framework used to build the backend.
 - **PostgreSQL**: Database used for managing transport-related data.
@@ -45,7 +42,7 @@ pip install asgiref==3.8.1 Django==5.1.5 django-extensions==3.2.3 pillow==11.1.0
 ---
 
 ## Installation & Setup
----
+
 
 ### 1. Clone the Repository:
 ```
@@ -89,10 +86,9 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
----
 
 ## Usage
----
+
 
 1. **Register & Login Securely**  
    - Sign up as a student, faculty, or admin.  
@@ -117,5 +113,5 @@ python manage.py runserver
 
 
 ## Contributors
----
+
 - Md Rakibul Hassan, Dipa Barua, Md Ifthakhar Alam Shams, Saima Sharmin Shama

@@ -120,22 +120,22 @@ python manage.py runserver
 
 - **Md Tahsin Azad Shaikat**
 
-CSE Undergraduate | Backend Developer | Robotics & IoT Enthusiast
+  CSE Undergraduate | Backend Developer | Robotics & IoT Enthusiast
 🔗 [LinkedIn](https://www.linkedin.com/in/mdtahsinazad020/)
 
 - **Dipa Barua**
 
-CSE Undergraduate | Frontend Developer | UI/UX Designer
+  CSE Undergraduate | Frontend Developer | UI/UX Designer
 🔗 [LinkedIn](https://www.linkedin.com/in/dipa-barua-387071303/)
 
 - **Md Ifthakhar Alam Shams**
 
-CSE Undergraduate | Database Developer | Prompt Engineering
+  CSE Undergraduate | Database Developer | Prompt Engineering
 🔗 [LinkedIn](https://www.linkedin.com/in/md-ifthakhar-alam-shams-85080a29a/)
 
 - **Saima Sharmin Shama**
 
-CSE Undergraduate | UI/UX Designer | Manual Testing
+  CSE Undergraduate | UI/UX Designer | Manual Testing
 🔗 [LinkedIn](https://www.linkedin.com/in/saima-sharmin-865148325/)
 
 ## License

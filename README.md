@@ -1,41 +1,48 @@
 <h1 align="center">Campus Transport Management System (CTMS)</h1>
 
-Campus Transport Management System is a web-based application designed to manage campus transportation services efficiently. This system enhances campus transportation by enabling bus schedule tracking, automated Gmail notifications, QR code-based transport cards, and staff information access. Admins get a powerful dashboard to manage transport details and user data efficiently.
+## Overview
 
+This is a comprehensive web-based Campus Transport Management System designed to efficiently manage campus transportation services. Built with Django, the system facilitates user registration, authentication, transport scheduling, real-time notifications, QR code-based transport cards, and staff management. It provides an admin dashboard for managing routes, schedules, and user data, ensuring a seamless transportation experience on campus.
+
+---
 
 ## Features
 
-### Secure User Authentication & Role-based Access
-- Users (students, faculty, and admin) can register and log in securely.
-- Role-based access control ensures different permissions for users and admins.
+### User Management & Authentication
+- Secure registration and login for students, faculty, and admin roles
+- Role-based access control
+- Profile management and QR code generation with student/faculty IDs
 
-### Automated Notifications for Timely Updates
-- Users receive real-time notifications about bus schedules, delays, and route changes.
-- Email and in-app alerts keep passengers informed.
+### Transport & Schedule Management
+- Dynamic creation and updates of bus routes and schedules
+- View current and upcoming transport schedules
+- Real-time notifications about delays, route changes, and timetable updates
 
-### QR Code Transport Cards for Easy Access
-- Generates unique QR codes for digital transport passes.
-- QR codes are scannable for quick check-in.
+### QR Code Transport Cards
+- Generates unique QR codes for digital transport passes
+- Scannable for quick check-in and validation
 
-### Bus Scheduling System for Efficient Management
-- Admins can create and manage transport schedules dynamically.
-- Users can view available transport options.
+### Notifications & Alerts
+- Automated email and in-app notifications to keep users informed about schedules, delays, and system updates
 
-### Admin Dashboard for Comprehensive Control
-- Admins can manage routes, schedules, and users from a central panel.
+### Admin Dashboard & Control Panel
+- Manage users, routes, schedules, and notifications
+- View and analyze transport usage and occupancy
 
+---
 
 ## Technologies Used
 
-### **Backend**
-- **Python Django**: Framework used to build the backend.
-- **PostgreSQL**: Database used for managing transport-related data.
+### Backend
+- **Python Django** (latest stable version)
+- **PostgreSQL** 
+- **Libraries:** Pillow, qrcode, psycopg2, django-extensions, reportlab
 
-### **Frontend**
-- **HTML, CSS, JavaScript**: For building the user interface.
+### Frontend
+- HTML, CSS, JavaScript (for dashboard and user interfaces)
 
-### **Dependencies (Python Libraries)**
-```
+### Dependencies
+```bash
 pip install asgiref==3.8.1 Django==5.1.5 django-extensions==3.2.3 pillow==11.1.0 psycopg2==2.9.10 psycopg2-binary==2.9.10 qrcode==8.0 sqlparse==0.5.3 reportlab
 ```
 
@@ -43,75 +50,94 @@ pip install asgiref==3.8.1 Django==5.1.5 django-extensions==3.2.3 pillow==11.1.0
 
 ## Installation & Setup
 
-
-### 1. Clone the Repository:
-```
+### 1. Clone the Repository
+```bash
 git clone https://github.com/your_username/Campus-Transport-Management.git
 cd Campus-Transport-Management
 ```
 
-### 2. Create & Activate Virtual Environment:
-```
+### 2. Create & Activate Virtual Environment
+```bash
 python -m venv venv
-source venv/bin/activate  # On Mac/Linux
-venv\Scripts\activate  # On Windows
+source venv/bin/activate  # Mac/Linux
+venv\Scripts\activate     # Windows
 ```
 
-### 3. Install Dependencies:
-```
+### 3. Install Dependencies
+```bash
 pip install -r requirements.txt
 ```
 
-### 4. Set Up Environment Variables:
-- Create a `.env` file in the root directory.
-- Add necessary variables like:
-  ```
-  DATABASE_URL=postgres://your_db_username:your_db_password@localhost:5432/your_db_name
-  SECRET_KEY=your_django_secret_key
-  DEBUG=True
-  ```
-
-### 5. Apply Migrations:
+### 4. Configure Environment Variables
+- Create a `.env` file in the root directory
+- Add variables:
 ```
+DATABASE_URL=postgres://your_db_username:your_db_password@localhost:5432/your_db_name
+SECRET_KEY=your_django_secret_key
+DEBUG=True
+```
+
+### 5. Apply Migrations
+```bash
 python manage.py migrate
 ```
 
-### 6. Create a Superuser (For Admin Panel):
-```
+### 6. Create a Superuser (Admin Access)
+```bash
 python manage.py createsuperuser
 ```
 
-### 7. Run the Application:
-```
+### 7. Run the Server
+```bash
 python manage.py runserver
 ```
 
+---
 
 ## Usage
 
+### User Registration & Login
+- Register as student/faculty via the signup page (`/register`)
+- Login at `/login` with your credentials
 
-1. **Register & Login Securely**  
-   - Sign up as a student, faculty, or admin.  
+### Transport Management
+- View schedules at `/schedule`
+- Receive notifications for delays/routes
+- Use QR code cards for quick check-in
 
-2. **Receive Instant Transport Notifications**  
-   - Get alerts for schedules, delays, and route changes.  
+### Admin Panel
+- Access at `/admin/`
+- Manage users, routes, schedules, notifications, and reports
 
-3. **Generate & Use QR Code Pass**  
-   - Scan QR codes for quick check-in and verification.  
-
-4. **Manage Routes & Schedules (Admin)**  
-   - Add, update, or cancel bus schedules anytime.  
-
-5. **View Reports & Analytics (Admin)**  
-   - Check transport usage, occupancy, and live stats.  
-
-6. **Monitor User & Admin Activities**  
-   - Track system usage, login records, and transactions.  
-
-7. **Ensure Secure Role-Based Access**  
-   - Restrict access based on user roles and permissions.  
-
+---
 
 ## Contributors
 
-- Md Rakibul Hassan, Md Tahsin Azad Shaikat, Dipa Barua, Md Ifthakhar Alam Shams, Saima Sharmin Shama
+- **Md Rakibul Hassan**
+
+  CSE Undergraduate | Backend Developer | Robotics & IoT Enthusiast
+🔗 [LinkedIn](https://www.linkedin.com/in/md-rakibul-hassan-507b00308)
+
+- **Md Tahsin Azad Shaikat**
+
+CSE Undergraduate | Backend Developer | Robotics & IoT Enthusiast
+🔗 [LinkedIn](https://www.linkedin.com/in/mdtahsinazad020/)
+
+- **Dipa Barua**
+
+CSE Undergraduate | Frontend Developer | UI/UX Designer
+🔗 [LinkedIn](https://www.linkedin.com/in/dipa-barua-387071303/)
+
+- **Md Ifthakhar Alam Shams**
+
+CSE Undergraduate | Database Developer | Prompt Engineering
+🔗 [LinkedIn](https://www.linkedin.com/in/md-ifthakhar-alam-shams-85080a29a/)
+
+- **Saima Sharmin Shama**
+
+CSE Undergraduate | UI/UX Designer | Manual Testing
+🔗 [LinkedIn](https://www.linkedin.com/in/saima-sharmin-865148325/)
+
+## License
+
+This project is open source and available under the MIT License.

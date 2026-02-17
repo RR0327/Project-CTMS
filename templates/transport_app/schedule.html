@@ -1,22 +1,37 @@
 {% extends 'transport_app/base.html' %}
 
 {% block content %}
-<h2>Transport Schedule</h2>
+<div class="d-flex justify-content-between align-items-center mb-5">
+    <h2 class="fw-bold"><i class="fas fa-calendar-alt me-3"></i>Transport Schedule</h2>
+    <span class="badge bg-info p-2 px-3 rounded-pill">Latest Updates</span>
+</div>
 
 {% if schedules %}
-    <ul>
+    <div class="row">
         {% for schedule in schedules %}
-            <li>
-                <strong>{{ schedule.title }}</strong><br>
-                {{ schedule.description }}<br>
-                <strong>Date:</strong> {{ schedule.date }} | <strong>Time:</strong> {{ schedule.time }}<br>
-                <small>Last Updated: {{ schedule.updated_at }}</small>
-            </li>
-            <hr>
+            <div class="col-md-6 mb-4">
+                <div class="card bg-transparent border-secondary text-white h-100 shadow-sm" style="backdrop-filter: blur(5px);">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <h5 class="card-title text-primary fw-bold">{{ schedule.title }}</h5>
+                            <small class="text-white-50"><i class="far fa-clock me-1"></i> {{ schedule.time }}</small>
+                        </div>
+                        <p class="card-text text-light">{{ schedule.description }}</p>
+                        <div class="mt-auto border-top border-secondary pt-2">
+                            <small class="text-white-50">
+                                <i class="far fa-calendar-check me-1"></i> {{ schedule.date }} | 
+                                <i class="fas fa-history me-1"></i> Updated: {{ schedule.updated_at|timesince }} ago
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
 {% else %}
-    <p>No schedule updates available.</p>
+    <div class="text-center py-5">
+        <i class="fas fa-info-circle fa-3x mb-3 text-secondary"></i>
+        <p class="lead">No transport schedules have been posted yet.</p>
+    </div>
 {% endif %}
-
 {% endblock %}

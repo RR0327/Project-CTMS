@@ -1,28 +1,43 @@
-{% extends 'base.html' %}
+{% extends 'transport_app/base.html' %}
 {% load static %}
 
 {% block content %}
-<h2>Sign Up</h2>
+<div class="row justify-content-center align-items-center min-vh-50">
+    <div class="col-md-6 col-lg-5 text-center">
+        <i class="fas fa-bus fa-4x mb-4 text-primary"></i>
+        <h2 class="fw-bold mb-4">Join CTMS</h2>
+        
+        <form method="POST" action="{% url 'register' %}" class="glass-panel p-4 rounded-4 shadow">
+            {% csrf_token %}
+            
+            <div class="form-floating mb-3">
+                <input type="text" name="name" class="form-control bg-transparent text-white" id="floatName" placeholder="Name" required>
+                <label for="floatName" class="text-white-50">Full Name</label>
+            </div>
 
-<!-- If you want Django to handle form directly instead of React, you'd do this: -->
-<form method="POST" action="{% url 'register_user' %}">
-  {% csrf_token %}
-  <label for="name">Name:</label>
-  <input type="text" name="name" id="name" required>
+            <div class="form-floating mb-3">
+                <input type="email" name="email" class="form-control bg-transparent text-white" id="floatEmail" placeholder="Email" required>
+                <label for="floatEmail" class="text-white-50">Email Address</label>
+            </div>
 
-  <label for="email">Email:</label>
-  <input type="email" name="email" id="email" required>
+            <div class="form-floating mb-3">
+                <select name="role" class="form-select bg-dark text-white" id="floatRole">
+                    <option value="student">Student</option>
+                    <option value="staff">Staff</option>
+                    <option value="faculty">Faculty</option>
+                </select>
+                <label for="floatRole" class="text-white-50">Your Role</label>
+            </div>
 
-  <label for="role">Role:</label>
-  <select name="role" id="role">
-    <option value="student">Student</option>
-    <option value="staff">Staff</option>
-    <option value="faculty">Faculty</option>
-  </select>
+            <div class="form-floating mb-4">
+                <input type="password" name="password" class="form-control bg-transparent text-white" id="floatPass" placeholder="Password" required>
+                <label for="floatPass" class="text-white-50">Password</label>
+            </div>
 
-  <label for="password">Password:</label>
-  <input type="password" name="password" id="password" required>
-
-  <button type="submit">Register</button>
-</form>
-{% endblock content %}
+            <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill shadow">Register Account</button>
+            
+            <p class="mt-4 text-white-50">Already have an account? <a href="{% url 'login' %}" class="text-info fw-bold">Log In</a></p>
+        </form>
+    </div>
+</div>
+{% endblock %}

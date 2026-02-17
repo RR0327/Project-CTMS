@@ -1,0 +1,93 @@
+/* transport_app/static/css/style.css */
+
+/* 1. Global Setup */
+body {
+    background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), 
+                url('../images/hero3.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #ffffff;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 2. Glassmorphism Design System */
+.glass-nav {
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* 3. Navigation Link Styling */
+.navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #0d6efd !important;
+    transform: translateY(-1px);
+}
+
+/* 4. Register Button Specific Fix */
+.navbar-nav .btn-primary {
+    background-color: #0d6efd;
+    border: none;
+    padding: 7px 22px; /* Balanced padding for vertical alignment */
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.navbar-nav .btn-primary:hover {
+    background-color: #0b5ed7;
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
+}
+
+/* 5. Mobile Adjustments */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background: rgba(0, 0, 0, 0.9);
+        margin-top: 15px;
+        padding: 20px;
+        border-radius: 15px;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .navbar-nav .nav-item {
+        width: 100%;
+        text-align: center;
+        margin: 10px 0;
+    }
+
+    .navbar-nav .btn-primary {
+        width: 100%; /* Full width for mobile tap targets */
+    }
+}
+
+/* 6. Form Polishing */
+.form-control, .form-select {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    border-radius: 10px;
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.2);
+}
+

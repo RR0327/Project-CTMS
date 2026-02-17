@@ -1,44 +1,95 @@
 {% extends 'transport_app/base.html' %}
 
 {% block header %}
-<!-- Leave this block empty to exclude the header -->
 {% endblock header %}
 
 {% block content %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page 2</title>
-    <script type="text/javascript">
-        window.onload = function() {
-            window.print();  // This will open the print dialog automatically
-        }
-    </script>
-</head>
-<div class="print-area">
-    <h2>CTMS(Campus Transport Management System)</h2>
-
-    <p><strong>Name:</strong> {{ user.name }}</p>
-  <!-- <p><strong>Email:</strong> {{ user.email }}</p> -->
-  <p><strong>Role:</strong> {{ user.get_role_display }}</p>
-  <p><strong>ID Number:</strong> {{ user.id_number }}</p>
-  {% if user.role == 'student' %}
-    <p><strong>Level:</strong> {{ user.level }}<strong>  Term:</strong> {{ user.term }}</p><p></p>
-  {% endif %}
-  <h3>QR Code:</h3> 
-  <img src="{{ card.qr_code.url }}" alt="QR Code" style="width: 100px;">
+<div class="container d-flex flex-column align-items-center justify-content-center min-vh-100 no-print-bg">
     
+    <div class="print-area p-4 shadow-lg bg-white text-dark rounded-4" style="max-width: 450px; border: 2px solid #333;">
+        <div class="text-center mb-4 border-bottom pb-2">
+            <h4 class="fw-bold mb-0">BAIUST</h4>
+            <p class="small text-uppercase tracking-wider mb-0">Campus Transport Management System</p>
+            <h6 class="text-muted mt-1">Digital Transport Pass - 2026</h6>
+        </div>
 
+        <div class="row align-items-center">
+            <div class="col-7">
+                <div class="mb-2">
+                    <small class="text-muted d-block">Name</small>
+                    <span class="fw-bold h6">{{ user.name }}</span>
+                </div>
+                <div class="mb-2">
+                    <small class="text-muted d-block">ID Number</small>
+                    <span class="fw-bold h6">{{ user.id_number }}</span>
+                </div>
+                <div class="mb-2">
+                    <small class="text-muted d-block">Role</small>
+                    <span class="badge bg-dark">{{ user.get_role_display }}</span>
+                </div>
+                {% if user.role == 'student' %}
+                <div class="mb-0">
+                    <small class="text-muted d-block">Academic Info</small>
+                    <span class="fw-bold">Level: {{ user.level }} | Term: {{ user.term }}</span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-5 text-center">
+                <div class="qr-container p-2 border rounded bg-light">
+                    {% if card.qr_code %}
+                        <img src="{{ card.qr_code.url }}" alt="QR Code" class="img-fluid" style="max-width: 110px;">
+                    {% else %}
+                        <small class="text-danger">QR Code Missing</small>
+                    {% endif %}
+                </div>
+                <p class="small mt-2 mb-0 fw-bold">SCAN TO VERIFY</p>
+            </div>
+        </div>
 
+        <div class="mt-4 pt-2 border-top text-center">
+            <p class="small text-muted mb-0">This card is non-transferable and must be presented upon request.</p>
+        </div>
+    </div>
 
-    <!-- Optional: Log Out Form -->
-    <form method="post" action="{% url 'logout_user' %}">
-        {% csrf_token %}
-        <!-- <button type="submit">Log Out</button> -->
-    </form>
-
+    <div class="mt-4 text-center no-print">
+        <button onclick="window.print()" class="btn btn-primary px-5 rounded-pill shadow-sm me-2">
+            <i class="fas fa-print me-2"></i> Print Again
+        </button>
+        <a href="{% url 'profile' %}" class="btn btn-outline-light px-4 rounded-pill">
+            <i class="fas fa-arrow-left me-2"></i> Return to Profile
+        </a>
+    </div>
 </div>
 
+<script type="text/javascript">
+    // Merged: Automatically open the print dialog when the page loads
+    window.onload = function() {
+        window.print();
+    }
+</script>
 
-  
+<style>
+    /* Specific overrides for the card generation page */
+    @media print {
+        /* Hide everything except the print-area */
+        body * {
+            visibility: hidden;
+        }
+        .print-area, .print-area * {
+            visibility: visible;
+        }
+        .print-area {
+            position: absolute;
+            left: 50%;
+            top: 20%;
+            transform: translateX(-50%);
+            width: 100%;
+            border: none !important;
+            box-shadow: none !important;
+        }
+        .no-print {
+            display: none !important;
+        }
+    }
+</style>
 {% endblock content %}

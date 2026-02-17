@@ -1,33 +1,38 @@
-<!-- Back_end/templates/transport_app/staff_info.html -->
-
 {% extends 'transport_app/base.html' %}
 
 {% block content %}
-<h2>Staff and Faculty Information</h2>
-<table border="1" cellpadding="10">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>ID Number</th>
-            <th>Level</th>
-            <th>Term</th>
-            <th>Contact Information</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for member in staff_members %}
-        <tr>
-            <td>{{ member.name }}</td>
-            <td>{{ member.email }}</td>
-            <td>{{ member.get_role_display }}</td>
-            <td>{{ member.id_number }}</td>
-            <td>{{ member.get_level_display }}</td>
-            <td>{{ member.get_term_display }}</td>
-            <td>{{ member.contact_information }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<h2 class="mb-4"><i class="fas fa-users-cog me-3 text-primary"></i>Staff & Faculty Directory</h2>
+
+<div class="table-responsive">
+    <table class="table table-dark table-hover align-middle shadow-sm">
+        <thead class="table-primary text-dark">
+            <tr>
+                <th>Name</th>
+                <th>Role</th>
+                <th>ID Number</th>
+                <th>Department Info</th>
+                <th>Contact</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in staff_members %}
+            <tr>
+                <td class="fw-bold">{{ member.name }}</td>
+                <td><span class="badge bg-secondary">{{ member.get_role_display }}</span></td>
+                <td>{{ member.id_number }}</td>
+                <td>{{ member.contact_information|truncatechars:30 }}</td>
+                <td>
+                    <a href="mailto:{{ member.email }}" class="btn btn-sm btn-outline-info rounded-pill">
+                        <i class="fas fa-envelope me-1"></i> Email
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center py-4 text-muted">No staff records available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

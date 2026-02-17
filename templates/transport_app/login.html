@@ -1,17 +1,32 @@
-<!-- Back_end/templates/transport_app/login.html -->
-
 {% extends 'transport_app/base.html' %}
 
 {% block content %}
-<h2>Login</h2>
-<form method="POST">
-    {% csrf_token %}
-    <label for="email">Email:</label><br>
-    <input type="email" name="email" required><br><br>
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="text-center mb-4">
+            <i class="fas fa-bus-alt fa-3x mb-3 text-primary"></i>
+            <h2 class="fw-bold">Sign In</h2>
+            <p class="text-white-50">Access your campus transport account</p>
+        </div>
 
-    <label for="password">Password:</label><br>
-    <input type="password" name="password" required><br><br>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Email Address</label>
+                <input type="email" name="email" class="form-control form-control-lg" placeholder="Enter your email" required>
+            </div>
 
-    <button type="submit">Login</button>
-</form>
+            <div class="mb-4">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control form-control-lg" placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg w-100 rounded-3 shadow mb-3">Login</button>
+            
+            <div class="text-center mt-3">
+                <p>New here? <a href="{% url 'register' %}" class="text-info text-decoration-none fw-bold">Create an account</a></p>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

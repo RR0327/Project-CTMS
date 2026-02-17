@@ -1,125 +1,110 @@
 {% extends 'transport_app/base.html' %}
 
 {% block content %}
-<h2>Register</h2>
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold"><i class="fas fa-user-plus me-2 text-primary"></i>Create Account</h2>
+            <p class="text-white-50">Join the CTMS network today</p>
+        </div>
+        
+        <form method="POST" class="needs-validation">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label class="form-label fw-bold">Full Name</label>
+                <input type="text" name="name" class="form-control bg-dark text-white border-secondary" 
+                       placeholder="Enter your full name" oninput="validateName(this)" required>
+                <p id="name-error" class="text-danger small mt-1" style="display: none;">Name can only contain letters and spaces.</p>
+            </div>
 
-<!-- Display error messages -->
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li class="{{ message.tags }}">{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Email</label>
+                    <input type="email" name="email" class="form-control bg-dark text-white border-secondary" 
+                           placeholder="name@baiust.edu.bd" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Role</label>
+                    <select name="role" id="role" class="form-select bg-dark text-white border-secondary" 
+                            onchange="toggleStudentFields()" required>
+                        <option value="" disabled selected>Select your role</option>
+                        <option value="student">Student</option>
+                        <option value="staff">Staff</option>
+                        <option value="faculty">Faculty</option>
+                    </select>
+                </div>
+            </div>
 
-<form method="POST">
-    {% csrf_token %}
-    
-    <label for="name">Name:</label><br>
-    <input type="text" name="name" id="name" oninput="validateName(this)" required><br>
-    <p id="name-error" style="color: red; display: none;">Name can only contain letters and spaces.</p><br>
+            <div id="student-fields" class="row mb-3" style="display: none;">
+                <div class="col-6">
+                    <label class="form-label fw-bold">Level</label>
+                    <select name="level" class="form-select bg-dark text-white border-secondary">
+                        <option value="1">Level 1</option>
+                        <option value="2">Level 2</option>
+                        <option value="3">Level 3</option>
+                        <option value="4">Level 4</option>
+                    </select>
+                </div>
+                <div class="col-6">
+                    <label class="form-label fw-bold">Term</label>
+                    <select name="term" class="form-select bg-dark text-white border-secondary">
+                        <option value="I">Term I</option>
+                        <option value="II">Term II</option>
+                    </select>
+                </div>
+            </div>
 
-    <label for="email">Email:</label><br>
-    <input type="email" name="email" required><br><br>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">ID Number</label>
+                    <input type="text" name="id_number" class="form-control bg-dark text-blue border-secondary" 
+                           oninput="validateIDNumber(this)" required>
+                    <p id="id-number-error" class="text-danger small mt-1" style="display: none;">ID Number can only contain numbers.</p>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Contact Number</label>
+                    <input type="text" name="contact_information" class="form-control bg-dark text-white border-secondary" 
+                           oninput="validateContactInfo(this)" required>
+                    <p id="contact-info-error" class="text-danger small mt-1" style="display: none;">Only numeric values allowed.</p>
+                </div>
+            </div>
 
-    <label for="role">Role:</label><br>
-    <select name="role" id="role" required onchange="toggleStudentFields()">
-        <option value="" disabled selected>Select your role</option>
-        <option value="student">Student</option>
-        <option value="staff">Staff</option>
-        <option value="faculty">Faculty</option>
-    </select><br><br>
+            <div class="mb-4">
+                <label class="form-label fw-bold">Password</label>
+                <input type="password" name="password" class="form-control bg-dark text-white border-secondary" required>
+            </div>
 
-    <!-- Student-only fields -->
-    <div id="student-fields" style="display: none;">
-        <label for="level">Level:</label><br>
-        <select name="level" id="level">
-            <option value="" disabled selected>Select your level</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-        </select><br><br>
-
-        <label for="term">Term:</label><br>
-        <select name="term" id="term">
-            <option value="" disabled selected>Select your term</option>
-            <option value="I">I</option>
-            <option value="II">II</option>
-        </select><br><br>
+            <button type="submit" class="btn btn-primary w-100 py-2 fw-bold rounded-pill shadow-lg">Register Now</button>
+        </form>
     </div>
-
-    <label for="id_number">ID Number:</label><br>
-    <input type="text" name="id_number" id="id_number" oninput="validateIDNumber(this)" required><br>
-    <p id="id-number-error" style="color: red; display: none;">ID Number can only contain numbers.</p><br>
-
-    <label for="contact_information">Contact Information:</label><br>
-    <textarea name="contact_information" id="contact_information" rows="4" cols="50" oninput="validateContactInfo(this)" required></textarea><br>
-    <p id="contact-info-error" style="color: red; display: none;">Contact Information can only contain numbers.</p><br>
-
-    <label for="password">Password:</label><br>
-    <input type="password" name="password" required><br><br>
-
-    <button type="submit">Register</button>
-</form>
+</div>
 
 <script>
-    // Function to validate Name (only alphabetic characters and spaces)
+    // Original Registration Scripts preserved and polished
     function validateName(input) {
         const regex = /^[A-Za-z\s]*$/;
-        const errorMessage = document.getElementById("name-error");
-
-        if (!regex.test(input.value)) {
-            errorMessage.style.display = "block";
-        } else {
-            errorMessage.style.display = "none";
-        }
+        document.getElementById("name-error").style.display = regex.test(input.value) ? "none" : "block";
     }
 
-    // Function to validate ID Number (only numeric values)
     function validateIDNumber(input) {
         const regex = /^\d*$/;
-        const errorMessage = document.getElementById("id-number-error");
-
-        if (!regex.test(input.value)) {
-            errorMessage.style.display = "block";
-        } else {
-            errorMessage.style.display = "none";
-        }
+        document.getElementById("id-number-error").style.display = regex.test(input.value) ? "none" : "block";
     }
 
-    // Function to validate Contact Information (only numeric values)
     function validateContactInfo(input) {
         const regex = /^\d*$/;
-        const errorMessage = document.getElementById("contact-info-error");
-
-        if (!regex.test(input.value)) {
-            errorMessage.style.display = "block";
-        } else {
-            errorMessage.style.display = "none";
-        }
+        document.getElementById("contact-info-error").style.display = regex.test(input.value) ? "none" : "block";
     }
 
-    // Function to toggle student fields based on role selection
     function toggleStudentFields() {
-        const role = document.getElementById("role").value;
-        const studentFields = document.getElementById("student-fields");
-
-        if (role === "student") {
-            studentFields.style.display = "block";
-            studentFields.querySelectorAll("select").forEach((field) => {
-                field.setAttribute("required", "true");
-            });
-        } else {
-            studentFields.style.display = "none";
-            studentFields.querySelectorAll("select").forEach((field) => {
-                field.removeAttribute("required");
-            });
-        }
+        const role = document.getElementById('role').value;
+        const studentFields = document.getElementById('student-fields');
+        studentFields.style.display = (role === 'student') ? 'flex' : 'none';
+        
+        const selects = studentFields.querySelectorAll('select');
+        selects.forEach(s => role === 'student' ? s.setAttribute('required', 'true') : s.removeAttribute('required'));
     }
-
-    // Initialize visibility on page load
     document.addEventListener("DOMContentLoaded", toggleStudentFields);
 </script>
-
 {% endblock %}

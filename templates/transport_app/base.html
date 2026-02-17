@@ -1,78 +1,78 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Campus Transport Management System</title>
-        <link rel="stylesheet" href="../../static/css/style.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    </head>
-   
-    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTMS | Campus Transport Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
 <body>
-    {% block header %}
-    <header>
-        <div class="logo">
-            <img src="../../static/images/baiust.jpeg" alt="Image description" width="80" height="80">
-        </div>
-        <h1>Campus Transport Management System</h1>
-        <nav class="navbar">
-            <a href="{% url 'home' %}">Home</a>
-            {% if user.is_authenticated %}
-                <a href="{% url 'profile' %}">Profile</a>
-                <a href="{% url 'schedule' %}">Schedule</a>
-                <a href="{% url 'staff_info' %}">Staff Info</a>
-                <form method="post" action="{% url 'logout_user' %}" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit" style="background:none; border:none; color:blue; cursor:pointer;">Log Out</button>
-                </form>
-            {% else %}
-                <a href="{% url 'login' %}">Login</a>
-                <a href="{% url 'register' %}">Register</a>
-            {% endif %}
-        </nav>
-    </header>
-    {% endblock header %}
 
-    <main class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark glass-nav sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                <img src="{% static 'images/baiust.jpeg' %}" alt="BAIUST" width="45" class="me-2 rounded-circle border border-white">
+                <span class="fw-bold tracking-tight">CTMS</span>
+            </a>
+            
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center"> <li class="nav-item">
+                        <a class="nav-link px-3" href="{% url 'home' %}">Home</a>
+                    </li>
+                    
+                    {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link px-3" href="{% url 'profile' %}">Profile</a></li>
+                        <li class="nav-item"><a class="nav-link px-3" href="{% url 'schedule' %}">Schedule</a></li>
+                        <li class="nav-item"><a class="nav-link px-3" href="{% url 'staff_info' %}">Staff Info</a></li>
+                        <li class="nav-item ms-lg-2">
+                            <form method="post" action="{% url 'logout_user' %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-4">Logout</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="{% url 'login' %}">Login</a>
+                        </li>
+                        <li class="nav-item ms-lg-3">
+                            <a class="btn btn-primary btn-sm rounded-pill px-4 fw-bold shadow-sm" href="{% url 'register' %}">
+                                Register
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5">
         {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show glass-panel mb-4" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
         {% endif %}
-        {% block content %}
-        <!-- Content from child templates will be injected here -->
-        {% endblock content %}
+
+        <div class="glass-panel p-4 p-md-5 animate__animated animate__fadeIn">
+            {% block content %}{% endblock %}
+        </div>
     </main>
 
-    <footer class="footer">
-        <div class="footer-container">
-            <nav class="footer-section">
-                <h6 class="footer-title">SERVICES</h6>
-                <a href="#">Branding</a>
-                <a href="#">Design</a>
-                <a href="#">Marketing</a>
-                <a href="#">Advertisement</a>
-            </nav>
-    
-            <nav class="footer-section">
-                <h6 class="footer-title">COMPANY</h6>
-                <a href="#">About us</a>
-                <a href="#">Contact</a>
-                <a href="#">Jobs</a>
-                <a href="#">Press kit</a>
-            </nav>
-    
-            <nav class="footer-section social">
-                <h6 class="footer-title">SOCIAL</h6>
-                <div class="social-icons">
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                </div>
-            </nav>
+    <footer class="mt-auto py-4 text-center text-white-50">
+        <div class="container border-top border-secondary pt-3">
+            <p class="small mb-0">&copy; 2026 Campus Transport Management System | BAIUST</p>
         </div>
-    </footer>    
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

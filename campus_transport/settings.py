@@ -138,7 +138,7 @@ STATIC_ROOT = (
 
 # Media files (Uploaded content like QR codes)
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "qr_codes"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

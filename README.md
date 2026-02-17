@@ -2,142 +2,139 @@
 
 ## Overview
 
-This is a comprehensive web-based Campus Transport Management System designed to efficiently manage campus transportation services. Built with Django, the system facilitates user registration, authentication, transport scheduling, real-time notifications, QR code-based transport cards, and staff management. It provides an admin dashboard for managing routes, schedules, and user data, ensuring a seamless transportation experience on campus.
+The Campus Transport Management System (CTMS) is a professional, glassmorphism-themed web application developed for BAIUST to digitize campus transit. It streamlines the commute for students and staff through real-time searchable schedules, digital transport passes, and automated administrative controls.
 
 ---
 
 ## Features
 
-### User Management & Authentication
-- Secure registration and login for students, faculty, and admin roles
-- Role-based access control
-- Profile management and QR code generation with student/faculty IDs
+### Transport and Schedule Management
 
-### Transport & Schedule Management
-- Dynamic creation and updates of bus routes and schedules
-- View current and upcoming transport schedules
-- Real-time notifications about delays, route changes, and timetable updates
+- **Public Central Schedule**: A comprehensive, searchable timetable accessible without login for easy trip planning.
+- **Trip Categorization**: Specifically tracks and filters for Up-trips (To Campus) and Down-trips (From Campus).
+- **Real-time Route Search**: Instant filtering for specific routes (e.g., Kandirpar, Sasason) or bus numbers.
+- **Administrative Posting**: Admins can publish live route updates directly through a dedicated web form.
 
-### QR Code Transport Cards
-- Generates unique QR codes for digital transport passes
-- Scannable for quick check-in and validation
+### Digital Pass and Profile
 
-### Notifications & Alerts
-- Automated email and in-app notifications to keep users informed about schedules, delays, and system updates
+- **Digital Transport Pass**: Automated generation of student and faculty transport cards using unique university IDs.
+- **Profile Dashboard**: Personal interface to view academic details and transport card status.
 
-### Admin Dashboard & Control Panel
-- Manage users, routes, schedules, and notifications
-- View and analyze transport usage and occupancy
+### Admin and Export Tools
+
+- **User Management**: A high-level dashboard for administrators to view and manage all registered campus members.
+- **PDF Export Utility**: Enables users to generate and download official offline versions of the transport schedule.
+
+### Communication and Support
+
+- **Automated Alerts**: Email notifications for schedule updates, delays, and secure password resets.
+- **Support Interface**: Integrated contact form with automated routing to the transport office for queries.
 
 ---
 
 ## Technologies Used
 
-### Backend
-- **Python Django** (latest stable version)
-- **PostgreSQL** 
-- **Libraries:** Pillow, qrcode, psycopg2, django-extensions, reportlab
+### Backend and Database
+
+- **Python Django 5.1.5**
+- **SQLite3** (Current development database)
+- **Libraries**: ReportLab (PDF), Pillow (Images), Django-Extensions.
 
 ### Frontend
-- HTML, CSS, JavaScript (for dashboard and user interfaces)
 
-### Dependencies
-```bash
-pip install asgiref==3.8.1 Django==5.1.5 django-extensions==3.2.3 pillow==11.1.0 psycopg2==2.9.10 psycopg2-binary==2.9.10 qrcode==8.0 sqlparse==0.5.3 reportlab
-```
+- **Bootstrap 5 and Font Awesome 6.5.1** for responsive UI.
+- **Glassmorphism CSS**: Custom modern UI design system with blur and transparency effects.
+- **Animate.css**: For smooth page transitions and entry animations.
 
 ---
 
-## Installation & Setup
+## Installation and Setup
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/your_username/Campus-Transport-Management.git
-cd Campus-Transport-Management
-```
+### 1. Clone and Environment
 
-### 2. Create & Activate Virtual Environment
 ```bash
+git clone https://github.com/your_username/CTMS-BAIUST.git
+cd CTMS-BAIUST
 python -m venv venv
-source venv/bin/activate  # Mac/Linux
-venv\Scripts\activate     # Windows
+venv\Scripts\activate  # Windows
+
 ```
 
-### 3. Install Dependencies
+### 2. Install Dependencies
+
 ```bash
-pip install -r requirements.txt
+pip install django reportlab pillow django-extensions
+
 ```
 
-### 4. Configure Environment Variables
-- Create a `.env` file in the root directory
-- Add variables:
-```
-DATABASE_URL=postgres://your_db_username:your_db_password@localhost:5432/your_db_name
-SECRET_KEY=your_django_secret_key
-DEBUG=True
-```
+### 3. Database and Superuser
 
-### 5. Apply Migrations
 ```bash
+python manage.py makemigrations
 python manage.py migrate
-```
-
-### 6. Create a Superuser (Admin Access)
-```bash
 python manage.py createsuperuser
+
 ```
 
-### 7. Run the Server
+### 4. Run the Server
+
 ```bash
 python manage.py runserver
+
 ```
 
 ---
 
-## Usage
+## Credits and Contributions
 
-### User Registration & Login
-- Register as student/faculty via the signup page (`/register`)
-- Login at `/login` with your credentials
+### Current Updated Project (Phase II)
 
-### Transport Management
-- View schedules at `/schedule`
-- Receive notifications for delays/routes
-- Use QR code cards for quick check-in
+- **Md Rakibul Hassan**: Backend Development
+- **Md Tahsin Azad Shaikat**: Backend Development
+- **Dipa Barua**: Frontend Development
+- **Saima Sharmin Shama**: Frontend Development
 
-### Admin Panel
-- Access at `/admin/`
-- Manage users, routes, schedules, notifications, and reports
+### Previous Version Credits (Phase I)
+
+- **Md Rakibul Hassan**: Backend Development
+- **Md Tahsin Azad Shaikat**: Backend Development
+- **Dipa Barua**: Frontend Development
+- **Saima Sharmin Shama**: Manual Testing
+- **Md Ifthakhar Alam Shams**: Database Sector Contribution Only
 
 ---
 
 ## Contributors
 
-- **Md Rakibul Hassan**
+- _Md Rakibul Hassan_
 
   CSE Undergraduate | Backend Developer | Robotics & IoT Enthusiast
-🔗 [LinkedIn](https://www.linkedin.com/in/md-rakibul-hassan-507b00308)
+  [LinkedIn](https://www.linkedin.com/in/md-rakibul-hassan-507b00308)
 
-- **Md Tahsin Azad Shaikat**
+- _Md Tahsin Azad Shaikat_
 
   CSE Undergraduate | Backend Developer | Robotics & IoT Enthusiast
-🔗 [LinkedIn](https://www.linkedin.com/in/mdtahsinazad020/)
+  [LinkedIn](https://www.linkedin.com/in/mdtahsinazad020/)
 
-- **Dipa Barua**
+- _Dipa Barua_
 
   CSE Undergraduate | Frontend Developer | UI/UX Designer
-🔗 [LinkedIn](https://www.linkedin.com/in/dipa-barua-387071303/)
+  [LinkedIn](https://www.linkedin.com/in/dipa-barua-387071303/)
 
-- **Md Ifthakhar Alam Shams**
+- _Md Ifthakhar Alam Shams_
 
   CSE Undergraduate | Database Developer | Prompt Engineering
-🔗 [LinkedIn](https://www.linkedin.com/in/md-ifthakhar-alam-shams-85080a29a/)
+  [LinkedIn](https://www.linkedin.com/in/md-ifthakhar-alam-shams-85080a29a/)
 
-- **Saima Sharmin Shama**
+- _Saima Sharmin Shama_
 
   CSE Undergraduate | UI/UX Designer | Manual Testing
-🔗 [LinkedIn](https://www.linkedin.com/in/saima-sharmin-865148325/)
+  [LinkedIn](https://www.linkedin.com/in/saima-sharmin-865148325/)
+
+---
 
 ## License
 
-This project is open source and available under the MIT License.
+This project is open source and available under the **MIT License**.
+
+---

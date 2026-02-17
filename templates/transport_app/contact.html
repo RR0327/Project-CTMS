@@ -1,0 +1,57 @@
+{% extends 'transport_app/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center animate__animated animate__fadeIn">
+    <div class="col-md-10 col-lg-8">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-primary display-5">Get in Touch</h2>
+            <p class="text-white-50">Have questions about the transport schedule? Our office is here to help.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="glass-panel p-4 h-100 text-center">
+                    <div class="mb-4">
+                        <i class="fas fa-map-marker-alt fa-2x text-primary mb-2"></i>
+                        <h6 class="fw-bold">Office Location</h6>
+                        <p class="small text-black-50">Transport Wing, BAIUST, Cumilla.</p>
+                    </div>
+                    <div class="mb-4">
+                        <i class="fas fa-phone-alt fa-2x text-success mb-2"></i>
+                        <h6 class="fw-bold">Call Us</h6>
+                        <p class="small text-black-50">+880 1234 567890</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-envelope fa-2x text-info mb-2"></i>
+                        <h6 class="fw-bold">Email</h6>
+                        <p class="small text-black-50">transport@baiust.edu.bd</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <form method="POST" class="glass-panel p-4 h-100 shadow-lg">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small fw-bold">Full Name</label>
+                            <input type="text" name="name" class="form-control" placeholder="Md Rakibul Hassan" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small fw-bold">Email Address</label>
+                            <input type="email" name="email" class="form-control" placeholder="rakib@example.com" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Message</label>
+                        <textarea name="message" class="form-control" rows="5" placeholder="Write your message here..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 rounded-pill py-3 fw-bold shadow">
+                        <i class="fas fa-paper-plane me-2"></i>Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

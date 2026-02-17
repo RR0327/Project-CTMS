@@ -1,4 +1,5 @@
 {% extends 'transport_app/base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="container-fluid animate__animated animate__fadeIn">
@@ -7,31 +8,41 @@
             <i class="fas fa-bus-alt me-2 text-primary"></i> Central Transport Schedule
         </h2>
         
-        <div class="btn-group shadow" role="group" aria-label="Trip Filter">
-            <button type="button" class="btn btn-outline-primary active" onclick="filterTrips('ALL', this)">All Trips</button>
-            <button type="button" class="btn btn-outline-success" onclick="filterTrips('UP', this)">Up-Trips</button>
-            <button type="button" class="btn btn-outline-warning" onclick="filterTrips('DOWN', this)">Down-Trips</button>
+        <div class="d-flex flex-wrap gap-2 justify-content-center">
+            <a href="{% url 'export_pdf' %}" class="btn btn-danger shadow-sm px-3 rounded-pill">
+                <i class="fas fa-file-pdf me-2"></i>Export PDF
+            </a>
+
+            <div class="input-group shadow-sm" style="max-width: 250px;">
+                <span class="input-group-text bg-dark border-secondary text-black-50"><i class="fas fa-search"></i></span>
+                <input type="text" id="routeSearch" class="form-control bg-dark text-black border-secondary" 
+                       placeholder="Search route..." onkeyup="searchTable()">
+            </div>
+            
+            <div class="btn-group shadow" role="group">
+                <button type="button" class="btn btn-outline-primary active" onclick="filterTrips('ALL', this)">All</button>
+                <button type="button" class="btn btn-outline-success" onclick="filterTrips('UP', this)">Up</button>
+                <button type="button" class="btn btn-outline-warning" onclick="filterTrips('DOWN', this)">Down</button>
+            </div>
         </div>
     </div>
 
     <div class="row mb-5 g-4">
-        <div class="col-md-6 trip-row" data-type="UP">
+        <div class="col-md-6 trip-row-card" data-type="UP">
             <div class="glass-panel p-4 border-start border-success border-4 h-100">
-                <h5 class="text-success fw-bold"><i class="fas fa-arrow-up me-2"></i>Daily Up-Trip Routine</h5>
+                <h5 class="text-success fw-bold"><i class="fas fa-arrow-up me-2"></i>Daily Up-Trip Routine (To Campus)</h5>
                 <ul class="list-unstyled text-blue-50 small mt-3">
-                    <li><i class="fas fa-check me-2"></i><strong>07:30 AM:</strong> Cumilla Town to Campus (Staff & Student)</li>
-                    <li><i class="fas fa-check me-2"></i><strong>08:15 AM:</strong> Cantonment Gate to Campus (Student)</li>
-                    <li><i class="fas fa-check me-2"></i><strong>01:30 PM:</strong> Mid-day Town Shuttle to Campus</li>
+                    <li><i class="fas fa-clock me-2 text-success"></i><strong>07:30 AM:</strong> Town to Campus (Staff)</li>
+                    <li><i class="fas fa-clock me-2 text-success"></i><strong>08:15 AM:</strong> Town to Campus (Student)</li>
                 </ul>
             </div>
         </div>
-        <div class="col-md-6 trip-row" data-type="DOWN">
+        <div class="col-md-6 trip-row-card" data-type="DOWN">
             <div class="glass-panel p-4 border-start border-warning border-4 h-100">
-                <h5 class="text-warning fw-bold"><i class="fas fa-arrow-down me-2"></i>Daily Down-Trip Routine</h5>
+                <h5 class="text-warning fw-bold"><i class="fas fa-arrow-down me-2"></i>Daily Down-Trip Routine (From Campus)</h5>
                 <ul class="list-unstyled text-blue-50 small mt-3">
-                    <li><i class="fas fa-check me-2"></i><strong>02:00 PM:</strong> Campus to Cumilla Town (Student)</li>
-                    <li><i class="fas fa-check me-2"></i><strong>04:30 PM:</strong> Campus to Town (Staff & Student)</li>
-                    <li><i class="fas fa-check me-2"></i><strong>05:15 PM:</strong> Campus to Cantonment Gate</li>
+                    <li><i class="fas fa-clock me-2 text-warning"></i><strong>02:00 PM:</strong> Campus to Town (Student)</li>
+                    <li><i class="fas fa-clock me-2 text-warning"></i><strong>04:30 PM:</strong> Campus to Town (Staff)</li>
                 </ul>
             </div>
         </div>
@@ -39,35 +50,31 @@
 
     {% if schedules %}
         <div class="table-responsive glass-panel p-0 border-0 shadow-lg">
-            <table class="table table-hover align-middle mb-0 text-white" id="scheduleTable">
+            <table class="table table-hover align-middle mb-0 text-blue" id="scheduleTable">
                 <thead class="table-dark">
                     <tr>
-                        <th class="ps-4 py-3">Trip Type</th>
-                        <th class="py-3">Route / Title</th>
-                        <th class="py-3">Departure Date</th>
+                        <th class="ps-4 py-3">Type</th>
+                        <th class="py-3">Route Details</th>
+                        <th class="py-3">Date</th>
                         <th class="py-3">Time</th>
-                        <th class="pe-4 text-end py-3">Update</th>
+                        <th class="pe-4 text-end py-3">Last Update</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for schedule in schedules %}
                         <tr class="border-bottom border-secondary trip-row" data-type="{{ schedule.trip_type }}">
                             <td class="ps-4">
-                                {% if schedule.trip_type == 'UP' %}
-                                    <span class="badge bg-success shadow-sm">UP-TRIP</span>
-                                {% else %}
-                                    <span class="badge bg-warning text-dark shadow-sm">DOWN-TRIP</span>
-                                {% endif %}
+                                <span class="badge {% if schedule.trip_type == 'UP' %}bg-success{% else %}bg-warning text-dark{% endif %}">
+                                    {{ schedule.get_trip_type_display }}
+                                </span>
                             </td>
-                            <td class="fw-bold text-primary">
+                            <td class="fw-bold text-primary search-target">
                                 {{ schedule.title }}
                                 <br><small class="text-blue-50 fw-normal">{{ schedule.description|truncatechars:50 }}</small>
                             </td>
-                            <td><i class="far fa-calendar-alt me-2 text-info"></i>{{ schedule.date }}</td>
+                            <td>{{ schedule.date }}</td>
                             <td><i class="far fa-clock me-2 text-warning"></i>{{ schedule.time }}</td>
-                            <td class="pe-4 text-end">
-                                <small class="text-blue-50">{{ schedule.updated_at|timesince }} ago</small>
-                            </td>
+                            <td class="pe-4 text-end small text-blue-50">{{ schedule.updated_at|timesince }} ago</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -75,37 +82,31 @@
         </div>
     {% else %}
         <div class="text-center py-5 glass-panel">
-            <i class="fas fa-calendar-times fa-4x mb-3 text-white-50"></i>
-            <h4 class="text-blue">No Live Schedule Data Found</h4>
-            <p class="text-black-50">Please refer to the fixed daily routines above.</p>
+            <h4 class="text-blue">No Live Updates</h4>
+            <p class="text-blue-50">Please refer to the fixed routines above.</p>
         </div>
     {% endif %}
-
-    <div class="mt-5 p-4 glass-panel mb-4">
-        <h5 class="fw-bold text-primary mb-3"><i class="fas fa-map-marked-alt me-2"></i>Route Legend & Places</h5>
-        <div class="row text-blue-50 small">
-            <div class="col-md-4 mb-2"><strong>Route A:</strong> Kandirpar > Zilla School > Campus</div>
-            <div class="col-md-4 mb-2"><strong>Route B:</strong> Sasason > Tomsombridge > Campus</div>
-            <div class="col-md-4 mb-2"><strong>Route C:</strong> Paduar Bazar > Bishwaroad > Campus</div>
-        </div>
-    </div>
 </div>
 
 <script>
+function searchTable() {
+    let input = document.getElementById("routeSearch").value.toUpperCase();
+    let rows = document.querySelectorAll(".trip-row");
+    rows.forEach(row => {
+        let text = row.querySelector(".search-target").textContent.toUpperCase();
+        row.style.display = text.includes(input) ? "" : "none";
+    });
+}
+
 function filterTrips(type, btn) {
-    // 1. Update Button States
     const buttons = btn.parentElement.querySelectorAll('.btn');
     buttons.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
-    // 2. Filter Rows and Cards
-    const elements = document.querySelectorAll('.trip-row');
+    const elements = document.querySelectorAll('.trip-row, .trip-row-card');
     elements.forEach(el => {
-        if (type === 'ALL') {
-            el.style.display = '';
-        } else {
-            el.style.display = (el.getAttribute('data-type') === type) ? '' : 'none';
-        }
+        if (type === 'ALL') el.style.display = '';
+        else el.style.display = (el.getAttribute('data-type') === type) ? '' : 'none';
     });
 }
 </script>

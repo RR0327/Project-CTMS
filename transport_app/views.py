@@ -1,66 +1,126 @@
+import io
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import FileResponse
+from django.core.mail import send_mail
+from django.conf import settings
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
 from .models import User, Card, Schedule
+
+# --- Public Views ---
 
 
 def home(request):
-    """Renders the home page with dynamic button logic."""
+    """Renders the landing page with animations."""
     return render(request, "transport_app/home.html")
 
 
-def register_view(request):
-    """Handles user registration and creates a Transport Card."""
-    if request.method == "POST":
-        data = request.POST
-        name, email, role = (
-            data.get("name").strip(),
-            data.get("email").strip(),
-            data.get("role"),
-        )
-        password, id_number = data.get("password"), data.get("id_number").strip()
-        contact_info = data.get("contact_information").strip()
-        level = data.get("level") if role == "student" else None
-        term = data.get("term") if role == "student" else None
+def central_schedule_view(request):
+    """Public view for the central schedule with trip-type filtering."""
+    schedules = Schedule.objects.all().order_by("-date", "-time")
+    return render(
+        request, "transport_app/central-schedule.html", {"schedules": schedules}
+    )
 
-        if not all([name, email, role, password, id_number, contact_info]):
-            messages.error(request, "All fields are required.")
-            return redirect("register")
+
+def about_view(request):
+    """Information about BAIUST transport."""
+    return render(request, "transport_app/about.html")
+
+
+def contact_view(request):
+    """Handles contact form submissions and sends emails to admin."""
+    if request.method == "POST":
+        name = request.POST.get("name")
+        sender_email = request.POST.get("email")
+        message = request.POST.get("message")
 
         try:
+            send_mail(
+                f"CTMS Contact from {name}",
+                message,
+                sender_email,
+                [settings.EMAIL_HOST_USER],
+                fail_silently=False,
+            )
+            messages.success(request, "Your message has been sent successfully!")
+        except Exception as e:
+            messages.error(request, "Email service error. Please try again later.")
+        return redirect("contact")
+    return render(request, "transport_app/contact.html")
+
+
+def terms_view(request):
+    """Legal terms for transport usage."""
+    return render(request, "transport_app/terms.html")
+
+
+def privacy_view(request):
+    """Data privacy policy."""
+    return render(request, "transport_app/privacy.html")
+
+
+def disclaimer_view(request):
+    """Service disclaimers."""
+    return render(request, "transport_app/disclaimer.html")
+
+
+# --- Authentication ---
+
+
+def register_view(request):
+    """Handles user registration and auto-generates a card."""
+    if request.method == "POST":
+        data = request.POST
+        try:
             user = User.objects.create_user(
-                email=email,
-                name=name,
-                role=role,
-                id_number=id_number,
-                level=level,
-                term=term,
-                contact_information=contact_info,
-                password=password,
+                email=data.get("email"),
+                name=data.get("name"),
+                role=data.get("role"),
+                id_number=data.get("id_number"),
+                level=data.get("level"),
+                term=data.get("term"),
+                contact_information=data.get("contact_information"),
+                password=data.get("password"),
             )
             Card.objects.create(user=user)
-            messages.success(request, "Registration successful! Please login.")
+            messages.success(request, "Account created! You can now login.")
             return redirect("login")
         except Exception as e:
-            messages.error(request, f"Error: {str(e)}")
+            messages.error(request, f"Registration failed: {str(e)}")
     return render(request, "transport_app/register.html")
 
 
 def login_view(request):
-    """Handles user authentication."""
+    """Authenticates users."""
     if request.method == "POST":
-        email, pw = request.POST.get("email").strip(), request.POST.get("password")
-        user = authenticate(request, email=email, password=pw)
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        user = authenticate(request, email=email, password=password)
         if user:
             login(request, user)
             return redirect("profile")
-        messages.error(request, "Invalid credentials.")
+        messages.error(request, "Invalid email or password.")
     return render(request, "transport_app/login.html")
+
+
+def logout_view(request):
+    """Logs out users."""
+    if request.method == "POST":
+        logout(request)
+        return redirect("home")
+    return redirect("home")
+
+
+# --- Protected User Views ---
 
 
 @login_required
 def profile_view(request):
+    """User profile and transport card details."""
     card = getattr(request.user, "card", None)
     return render(
         request, "transport_app/profile.html", {"user": request.user, "card": card}
@@ -69,6 +129,7 @@ def profile_view(request):
 
 @login_required
 def generate_card_view(request):
+    """Generates the digital transport pass."""
     card, _ = Card.objects.get_or_create(user=request.user)
     return render(
         request,
@@ -79,99 +140,65 @@ def generate_card_view(request):
 
 @login_required
 def schedule_view(request):
+    """Card-based 'Latest Updates' view."""
     schedules = Schedule.objects.all().order_by("-updated_at")
     return render(request, "transport_app/schedule.html", {"schedules": schedules})
 
 
+@login_required
 def staff_info_view(request):
-    """FIX: Points to staff-info.html to match your file directory naming."""
+    """Lists staff/faculty. Uses staff-info.html."""
     staff_members = User.objects.filter(role__in=["staff", "faculty"])
     return render(
         request, "transport_app/staff-info.html", {"staff_members": staff_members}
     )
 
 
-@login_required
-def view_registered_users(request):
-    if not request.user.is_admin:
-        return redirect("home")
-    return render(
-        request, "transport_app/admin_users.html", {"users": User.objects.all()}
-    )
-
-
-def logout_view(request):
-    if request.method == "POST":
-        logout(request)
-        messages.success(request, "Logged out successfully.")
-        return redirect("login")
-    return redirect("home")
-
-
-@login_required
-def central_schedule_view(request):
-    """
-    Renders the new Central Transport Schedule using the table layout.
-    """
-    schedules = Schedule.objects.all().order_by("-updated_at")
-    return render(
-        request, "transport_app/central_schedule.html", {"schedules": schedules}
-    )
+# --- Administrative Views ---
 
 
 @login_required
 def admin_users_view(request):
-    """
-    A protected dashboard view to list all registered users for administrators.
-    """
+    """Dashboard to manage registered users."""
     if not request.user.is_admin:
         return redirect("home")
-
-    users = User.objects.all().order_by("role", "name")
+    users = User.objects.all()
     return render(request, "transport_app/admin_users.html", {"users": users})
 
 
 @login_required
-def staff_info_view(request):
-    """
-    Lists all staff and faculty. Fixed to point to staff-info.html.
-    """
-    staff_members = User.objects.filter(role__in=["staff", "faculty"]).order_by("name")
-    return render(
-        request, "transport_app/staff-info.html", {"staff_members": staff_members}
-    )
-
-
-def central_schedule_view(request):
-    schedules = Schedule.objects.all().order_by("-date", "-time")
-    # This string must match the filename in your templates folder exactly
-    return render(
-        request, "transport_app/central-schedule.html", {"schedules": schedules}
-    )
+def post_schedule_view(request):
+    """Form for admins to post new trips."""
+    if not request.user.is_admin:
+        return redirect("home")
+    if request.method == "POST":
+        Schedule.objects.create(
+            title=request.POST.get("title"),
+            description=request.POST.get("description"),
+            date=request.POST.get("date"),
+            time=request.POST.get("time"),
+            trip_type=request.POST.get("trip_type"),
+        )
+        messages.success(request, "Schedule published!")
+        return redirect("central_schedule")
+    return render(request, "transport_app/post-schedule.html")
 
 
 @login_required
-def post_schedule_view(request):
-    if not request.user.is_admin:
-        messages.error(request, "Admin privileges required.")
-        return redirect("home")
-
-    if request.method == "POST":
-        title = request.POST.get("title")
-        description = request.POST.get("description")
-        date = request.POST.get("date")
-        time = request.POST.get("time")
-        trip_type = request.POST.get("trip_type")  # Capture trip type
-
-        if all([title, date, time, trip_type]):
-            Schedule.objects.create(
-                title=title,
-                description=description,
-                date=date,
-                time=time,
-                trip_type=trip_type,
-            )
-            messages.success(request, "Schedule posted successfully!")
-            return redirect("central_schedule")
-
-    return render(request, "transport_app/post-schedule.html")
+def export_schedule_pdf(request):
+    """Generates a PDF download of all schedules."""
+    buffer = io.BytesIO()
+    p = canvas.Canvas(buffer, pagesize=letter)
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(100, 750, "BAIUST Central Transport Schedule")
+    p.setFont("Helvetica", 10)
+    y = 700
+    for s in Schedule.objects.all():
+        p.drawString(
+            100, y, f"{s.get_trip_type_display()} | {s.title} | {s.date} | {s.time}"
+        )
+        y -= 20
+    p.showPage()
+    p.save()
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename="Schedule.pdf")

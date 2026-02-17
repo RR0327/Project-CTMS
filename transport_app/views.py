@@ -6,10 +6,12 @@ from .models import User, Card, Schedule
 
 
 def home(request):
+    """Renders the home page with dynamic button logic."""
     return render(request, "transport_app/home.html")
 
 
 def register_view(request):
+    """Handles user registration and creates a Transport Card."""
     if request.method == "POST":
         data = request.POST
         name, email, role = (
@@ -26,13 +28,6 @@ def register_view(request):
             messages.error(request, "All fields are required.")
             return redirect("register")
 
-        if (
-            User.objects.filter(email=email).exists()
-            or User.objects.filter(id_number=id_number).exists()
-        ):
-            messages.error(request, "User already exists with this email or ID.")
-            return redirect("register")
-
         try:
             user = User.objects.create_user(
                 email=email,
@@ -45,7 +40,7 @@ def register_view(request):
                 password=password,
             )
             Card.objects.create(user=user)
-            messages.success(request, "Success! Please login.")
+            messages.success(request, "Registration successful! Please login.")
             return redirect("login")
         except Exception as e:
             messages.error(request, f"Error: {str(e)}")
@@ -53,6 +48,7 @@ def register_view(request):
 
 
 def login_view(request):
+    """Handles user authentication."""
     if request.method == "POST":
         email, pw = request.POST.get("email").strip(), request.POST.get("password")
         user = authenticate(request, email=email, password=pw)
@@ -88,9 +84,10 @@ def schedule_view(request):
 
 
 def staff_info_view(request):
+    """FIX: Points to staff-info.html to match your file directory naming."""
     staff_members = User.objects.filter(role__in=["staff", "faculty"])
     return render(
-        request, "transport_app/staff_info.html", {"staff_members": staff_members}
+        request, "transport_app/staff-info.html", {"staff_members": staff_members}
     )
 
 
@@ -106,6 +103,75 @@ def view_registered_users(request):
 def logout_view(request):
     if request.method == "POST":
         logout(request)
-        messages.success(request, "Logged out.")
+        messages.success(request, "Logged out successfully.")
         return redirect("login")
     return redirect("home")
+
+
+@login_required
+def central_schedule_view(request):
+    """
+    Renders the new Central Transport Schedule using the table layout.
+    """
+    schedules = Schedule.objects.all().order_by("-updated_at")
+    return render(
+        request, "transport_app/central_schedule.html", {"schedules": schedules}
+    )
+
+
+@login_required
+def admin_users_view(request):
+    """
+    A protected dashboard view to list all registered users for administrators.
+    """
+    if not request.user.is_admin:
+        return redirect("home")
+
+    users = User.objects.all().order_by("role", "name")
+    return render(request, "transport_app/admin_users.html", {"users": users})
+
+
+@login_required
+def staff_info_view(request):
+    """
+    Lists all staff and faculty. Fixed to point to staff-info.html.
+    """
+    staff_members = User.objects.filter(role__in=["staff", "faculty"]).order_by("name")
+    return render(
+        request, "transport_app/staff-info.html", {"staff_members": staff_members}
+    )
+
+
+def central_schedule_view(request):
+    schedules = Schedule.objects.all().order_by("-date", "-time")
+    # This string must match the filename in your templates folder exactly
+    return render(
+        request, "transport_app/central-schedule.html", {"schedules": schedules}
+    )
+
+
+@login_required
+def post_schedule_view(request):
+    if not request.user.is_admin:
+        messages.error(request, "Admin privileges required.")
+        return redirect("home")
+
+    if request.method == "POST":
+        title = request.POST.get("title")
+        description = request.POST.get("description")
+        date = request.POST.get("date")
+        time = request.POST.get("time")
+        trip_type = request.POST.get("trip_type")  # Capture trip type
+
+        if all([title, date, time, trip_type]):
+            Schedule.objects.create(
+                title=title,
+                description=description,
+                date=date,
+                time=time,
+                trip_type=trip_type,
+            )
+            messages.success(request, "Schedule posted successfully!")
+            return redirect("central_schedule")
+
+    return render(request, "transport_app/post-schedule.html")

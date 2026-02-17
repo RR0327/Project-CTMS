@@ -1,0 +1,112 @@
+{% extends 'transport_app/base.html' %}
+
+{% block content %}
+<div class="container-fluid animate__animated animate__fadeIn">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-blue mb-3 mb-md-0">
+            <i class="fas fa-bus-alt me-2 text-primary"></i> Central Transport Schedule
+        </h2>
+        
+        <div class="btn-group shadow" role="group" aria-label="Trip Filter">
+            <button type="button" class="btn btn-outline-primary active" onclick="filterTrips('ALL', this)">All Trips</button>
+            <button type="button" class="btn btn-outline-success" onclick="filterTrips('UP', this)">Up-Trips</button>
+            <button type="button" class="btn btn-outline-warning" onclick="filterTrips('DOWN', this)">Down-Trips</button>
+        </div>
+    </div>
+
+    <div class="row mb-5 g-4">
+        <div class="col-md-6 trip-row" data-type="UP">
+            <div class="glass-panel p-4 border-start border-success border-4 h-100">
+                <h5 class="text-success fw-bold"><i class="fas fa-arrow-up me-2"></i>Daily Up-Trip Routine</h5>
+                <ul class="list-unstyled text-blue-50 small mt-3">
+                    <li><i class="fas fa-check me-2"></i><strong>07:30 AM:</strong> Cumilla Town to Campus (Staff & Student)</li>
+                    <li><i class="fas fa-check me-2"></i><strong>08:15 AM:</strong> Cantonment Gate to Campus (Student)</li>
+                    <li><i class="fas fa-check me-2"></i><strong>01:30 PM:</strong> Mid-day Town Shuttle to Campus</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6 trip-row" data-type="DOWN">
+            <div class="glass-panel p-4 border-start border-warning border-4 h-100">
+                <h5 class="text-warning fw-bold"><i class="fas fa-arrow-down me-2"></i>Daily Down-Trip Routine</h5>
+                <ul class="list-unstyled text-blue-50 small mt-3">
+                    <li><i class="fas fa-check me-2"></i><strong>02:00 PM:</strong> Campus to Cumilla Town (Student)</li>
+                    <li><i class="fas fa-check me-2"></i><strong>04:30 PM:</strong> Campus to Town (Staff & Student)</li>
+                    <li><i class="fas fa-check me-2"></i><strong>05:15 PM:</strong> Campus to Cantonment Gate</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% if schedules %}
+        <div class="table-responsive glass-panel p-0 border-0 shadow-lg">
+            <table class="table table-hover align-middle mb-0 text-white" id="scheduleTable">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="ps-4 py-3">Trip Type</th>
+                        <th class="py-3">Route / Title</th>
+                        <th class="py-3">Departure Date</th>
+                        <th class="py-3">Time</th>
+                        <th class="pe-4 text-end py-3">Update</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for schedule in schedules %}
+                        <tr class="border-bottom border-secondary trip-row" data-type="{{ schedule.trip_type }}">
+                            <td class="ps-4">
+                                {% if schedule.trip_type == 'UP' %}
+                                    <span class="badge bg-success shadow-sm">UP-TRIP</span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark shadow-sm">DOWN-TRIP</span>
+                                {% endif %}
+                            </td>
+                            <td class="fw-bold text-primary">
+                                {{ schedule.title }}
+                                <br><small class="text-blue-50 fw-normal">{{ schedule.description|truncatechars:50 }}</small>
+                            </td>
+                            <td><i class="far fa-calendar-alt me-2 text-info"></i>{{ schedule.date }}</td>
+                            <td><i class="far fa-clock me-2 text-warning"></i>{{ schedule.time }}</td>
+                            <td class="pe-4 text-end">
+                                <small class="text-blue-50">{{ schedule.updated_at|timesince }} ago</small>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="text-center py-5 glass-panel">
+            <i class="fas fa-calendar-times fa-4x mb-3 text-white-50"></i>
+            <h4 class="text-blue">No Live Schedule Data Found</h4>
+            <p class="text-black-50">Please refer to the fixed daily routines above.</p>
+        </div>
+    {% endif %}
+
+    <div class="mt-5 p-4 glass-panel mb-4">
+        <h5 class="fw-bold text-primary mb-3"><i class="fas fa-map-marked-alt me-2"></i>Route Legend & Places</h5>
+        <div class="row text-blue-50 small">
+            <div class="col-md-4 mb-2"><strong>Route A:</strong> Kandirpar > Zilla School > Campus</div>
+            <div class="col-md-4 mb-2"><strong>Route B:</strong> Sasason > Tomsombridge > Campus</div>
+            <div class="col-md-4 mb-2"><strong>Route C:</strong> Paduar Bazar > Bishwaroad > Campus</div>
+        </div>
+    </div>
+</div>
+
+<script>
+function filterTrips(type, btn) {
+    // 1. Update Button States
+    const buttons = btn.parentElement.querySelectorAll('.btn');
+    buttons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // 2. Filter Rows and Cards
+    const elements = document.querySelectorAll('.trip-row');
+    elements.forEach(el => {
+        if (type === 'ALL') {
+            el.style.display = '';
+        } else {
+            el.style.display = (el.getAttribute('data-type') === type) ? '' : 'none';
+        }
+    });
+}
+</script>
+{% endblock %}

@@ -11,14 +11,20 @@ from django.conf import settings
 
 
 class Schedule(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.TextField()
+    TRIP_CHOICES = [
+        ("UP", "Up-trip (To Campus)"),
+        ("DOWN", "Down-trip (From Campus)"),
+    ]
+
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True, null=True)
     date = models.DateField()
     time = models.TimeField()
+    trip_type = models.CharField(max_length=4, choices=TRIP_CHOICES, default="UP")
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.title
+        return f"{self.get_trip_type_display()} - {self.title}"
 
 
 @receiver(post_save, sender=Schedule)

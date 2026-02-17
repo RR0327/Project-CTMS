@@ -4,8 +4,10 @@ from . import views
 urlpatterns = [
     # General Navigation
     path("", views.home, name="home"),
-    path("schedule/", views.schedule_view, name="schedule"),
-    path("staff-info/", views.staff_info_view, name="staff_info"),
+    path("schedule/updates/", views.schedule_view, name="schedule"),
+    path("schedule/central/", views.central_schedule_view, name="central_schedule"),
+    path("schedule/post/", views.post_schedule_view, name="post_schedule"),
+    path("staff-info/", views.staff_info_view, name="staff_info"),  # Consistent naming
     # Authentication
     path("register/", views.register_view, name="register"),
     path("login/", views.login_view, name="login"),

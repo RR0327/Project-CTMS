@@ -1,0 +1,53 @@
+{% extends 'transport_app/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center animate__animated animate__fadeIn">
+    <div class="col-md-8 col-lg-6">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-white"><i class="fas fa-plus-circle me-2 text-primary"></i>Post Transport Update</h2>
+            <p class="text-white-50">This information will be public on the Central Schedule page.</p>
+        </div>
+
+        <form method="POST" class="glass-panel p-4 shadow-lg">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label class="form-label fw-bold">Route Title</label>
+                <input type="text" name="title" class="form-control" placeholder="e.g., Campus to Town - Bus 04" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Trip Direction</label>
+                <select name="trip_type" class="form-select bg-dark text-white border-secondary" required>
+                    <option value="" disabled selected>Select trip type</option>
+                    <option value="UP">Up-trip (To Campus)</option>
+                    <option value="DOWN">Down-trip (From Campus)</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Description (Optional)</label>
+                <textarea name="description" class="form-control" rows="2" placeholder="Stops, bus numbers, or special notes"></textarea>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Departure Date</label>
+                    <input type="date" name="date" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Departure Time</label>
+                    <input type="time" name="time" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 mt-4">
+                <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold shadow">
+                    <i class="fas fa-paper-plane me-2"></i>Publish Update
+                </button>
+                <a href="{% url 'central_schedule' %}" class="btn btn-outline-light rounded-pill">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

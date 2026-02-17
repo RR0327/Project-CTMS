@@ -9,7 +9,7 @@ body {
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Crucial for footer positioning */
 }
 
 /* 2. Glassmorphism Design System */
@@ -29,7 +29,7 @@ body {
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 }
 
-/* 3. Navigation Link Styling */
+/* 3. Navigation & Button Polishing */
 .navbar-nav .nav-link {
     color: rgba(255, 255, 255, 0.8) !important;
     font-size: 0.95rem;
@@ -37,24 +37,46 @@ body {
     transition: all 0.3s ease;
 }
 
-.navbar-nav .nav-link:hover {
-    color: #0d6efd !important;
-    transform: translateY(-1px);
-}
-
-/* 4. Register Button Specific Fix */
 .navbar-nav .btn-primary {
     background-color: #0d6efd;
     border: none;
-    padding: 7px 22px; /* Balanced padding for vertical alignment */
+    padding: 7px 22px;
     font-size: 0.9rem;
     transition: all 0.3s ease;
 }
 
 .navbar-nav .btn-primary:hover {
-    background-color: #0b5ed7;
     transform: scale(1.05);
     box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
+}
+
+/* 4. Footer & Social Hover Effects */
+.footer-glass {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.footer-glass a {
+    transition: color 0.3s, transform 0.3s;
+    text-decoration: none;
+}
+
+.footer-glass .list-unstyled a:hover {
+    color: #4caacf !important;
+    padding-left: 5px;
+}
+
+.footer-glass .social-icons a {
+    font-size: 1.5rem;
+    color: #3489d4;
+    display: inline-block;
+}
+
+.footer-glass .social-icons a:hover {
+    color: #13c1b0 !important;
+    transform: scale(1.2) translateY(-3px) !important;
 }
 
 /* 5. Mobile Adjustments */
@@ -66,28 +88,9 @@ body {
         border-radius: 15px;
         border: 1px solid rgba(255,255,255,0.1);
     }
-    
-    .navbar-nav .nav-item {
-        width: 100%;
-        text-align: center;
-        margin: 10px 0;
-    }
-
-    .navbar-nav .btn-primary {
-        width: 100%; /* Full width for mobile tap targets */
-    }
 }
 
-/* 6. Form Polishing */
-.form-control, .form-select {
-    background: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    color: white !important;
-    border-radius: 10px;
+.img-fluid {
+    max-width: 100%;
+    height: auto;
 }
-
-.form-control:focus {
-    background: rgba(255, 255, 255, 0.1) !important;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.2);
-}
-

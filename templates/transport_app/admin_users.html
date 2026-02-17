@@ -1,0 +1,49 @@
+{% extends 'transport_app/base.html' %}
+
+{% block content %}
+<div class="animate__animated animate__fadeIn">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-white"><i class="fas fa-user-shield me-2 text-primary"></i> Registered Users</h2>
+        <span class="badge bg-secondary rounded-pill px-3 py-2">Total Users: {{ users.count }}</span>
+    </div>
+
+    <div class="table-responsive glass-panel p-0 border-0 shadow-lg">
+        <table class="table table-hover align-middle mb-0 text-white">
+            <thead class="table-dark">
+                <tr>
+                    <th class="ps-4">Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>ID Number</th>
+                    <th>Level/Term</th>
+                    <th class="pe-4">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr class="border-bottom border-secondary">
+                    <td class="ps-4 fw-bold">{{ user.name }}</td>
+                    <td class="text-white-50">{{ user.email }}</td>
+                    <td><span class="badge {% if user.role == 'admin' %}bg-danger{% else %}bg-info{% endif %}">{{ user.get_role_display }}</span></td>
+                    <td>{{ user.id_number }}</td>
+                    <td>
+                        {% if user.role == 'student' %}
+                            L-{{ user.level }} T-{{ user.term }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td class="pe-4">
+                        {% if user.is_active %}
+                            <span class="text-success small"><i class="fas fa-check-circle me-1"></i>Active</span>
+                        {% else %}
+                            <span class="text-muted small"><i class="fas fa-times-circle me-1"></i>Inactive</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

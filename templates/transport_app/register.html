@@ -8,7 +8,7 @@
             <p class="text-white-50">Join the CTMS network today</p>
         </div>
         
-        <form method="POST" class="needs-validation">
+        <form method="POST" class="needs-validation fade-slide-up">
             {% csrf_token %}
             
             <div class="mb-3">
@@ -58,15 +58,15 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label class="form-label fw-bold">ID Number</label>
-                    <input type="text" name="id_number" class="form-control bg-dark text-blue border-secondary" 
-                           oninput="validateIDNumber(this)" required>
-                    <p id="id-number-error" class="text-danger small mt-1" style="display: none;">ID Number can only contain numbers.</p>
+                      <input id="id_number_input" type="text" name="id_number" class="form-control bg-dark text-white border-secondary" 
+                          placeholder="Enter your numeric ID" oninput="validateIDNumber(this)" onfocus="idFocus(this)" onblur="idBlur(this)" required>
+                      <p id="id-number-error" class="text-danger small mt-1" style="display: none;">ID Number can only contain numbers.</p>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Contact Number</label>
-                    <input type="text" name="contact_information" class="form-control bg-dark text-white border-secondary" 
-                           oninput="validateContactInfo(this)" required>
-                    <p id="contact-info-error" class="text-danger small mt-1" style="display: none;">Only numeric values allowed.</p>
+                    <input type="tel" name="contact_information" class="form-control bg-dark text-white border-secondary" 
+                           pattern="01\d{9}" maxlength="11" placeholder="e.g. 01712345678" oninput="validateContactInfo(this)" required>
+                    <p id="contact-info-error" class="text-danger small mt-1" style="display: none;">Enter 11 digits starting with 01 (e.g., 01712345678).</p>
                 </div>
             </div>
 
@@ -78,9 +78,32 @@
             <button type="submit" class="btn btn-primary w-100 py-2 fw-bold rounded-pill shadow-lg">Register Now</button>
         </form>
     </div>
-</div>
+    </div>
 
-<script>
+    <style>
+        /* Combined fade + slide-up animation */
+        .fade-slide-up { animation: fadeSlideUp 480ms cubic-bezier(.22,.9,.32,1) both; }
+        @keyframes fadeSlideUp {
+            0% { opacity: 0; transform: translateY(22px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Subtle stagger for inputs/selects/button inside the form */
+        .fade-slide-up .form-control,
+        .fade-slide-up .form-select,
+        .fade-slide-up .btn {
+            opacity: 0; transform: translateY(8px); animation: fadeSlideChild 360ms ease both; animation-delay: 120ms;
+        }
+        .fade-slide-up .form-control:nth-of-type(1) { animation-delay: 140ms; }
+        .fade-slide-up .form-control:nth-of-type(2) { animation-delay: 180ms; }
+        .fade-slide-up .form-control:nth-of-type(3) { animation-delay: 220ms; }
+        .fade-slide-up .form-select:nth-of-type(1) { animation-delay: 160ms; }
+        .fade-slide-up .btn { animation-delay: 260ms; }
+
+        @keyframes fadeSlideChild { to { opacity: 1; transform: translateY(0); } }
+    </style>
+
+    <script>
     // Original Registration Scripts preserved and polished
     function validateName(input) {
         const regex = /^[A-Za-z\s]*$/;
@@ -90,11 +113,27 @@
     function validateIDNumber(input) {
         const regex = /^\d*$/;
         document.getElementById("id-number-error").style.display = regex.test(input.value) ? "none" : "block";
+        // Ensure the input uses the bootstrap text color when typing
+        input.classList.add('text-white');
+    }
+
+    function idFocus(input) {
+        // keep Bootstrap text color on focus
+        input.classList.add('text-white');
+    }
+
+    function idBlur(input) {
+        // keep Bootstrap text color even when blurred; no inline color overrides
+        input.classList.add('text-white');
     }
 
     function validateContactInfo(input) {
-        const regex = /^\d*$/;
-        document.getElementById("contact-info-error").style.display = regex.test(input.value) ? "none" : "block";
+        // Allow empty while typing, otherwise require full 11-digit local Bangladeshi number starting with 01
+        const fullRegex = /^01\d{9}$/;
+        const showError = input.value.length > 0 && !fullRegex.test(input.value);
+        document.getElementById("contact-info-error").style.display = showError ? "block" : "none";
+        // Strip non-digits as user types
+        input.value = input.value.replace(/\D/g, '').slice(0,11);
     }
 
     function toggleStudentFields() {

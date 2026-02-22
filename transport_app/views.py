@@ -9,6 +9,7 @@ from django.conf import settings
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from .models import User, Card, Schedule
+import re
 
 # --- Public Views ---
 
@@ -75,6 +76,18 @@ def register_view(request):
     """Handles user registration and auto-generates a card."""
     if request.method == "POST":
         data = request.POST
+        # Validate and normalize Bangladeshi mobile numbers.
+        contact_raw = data.get("contact_information", "").strip()
+        # Remove non-digit characters
+        contact_digits = re.sub(r"\D", "", contact_raw)
+        # Expect local format: 01xxxxxxxxx (11 digits)
+        if not re.fullmatch(r"01\d{9}", contact_digits):
+            messages.error(request, "Contact number must be 11 digits and start with '01'.")
+            return render(request, "transport_app/register.html")
+
+        # Normalize to international format +8801xxxxxxxxx (drop leading 0)
+        contact_normalized = "+880" + contact_digits[1:]
+
         try:
             user = User.objects.create_user(
                 email=data.get("email"),
@@ -83,7 +96,7 @@ def register_view(request):
                 id_number=data.get("id_number"),
                 level=data.get("level"),
                 term=data.get("term"),
-                contact_information=data.get("contact_information"),
+                contact_information=contact_normalized,
                 password=data.get("password"),
             )
             Card.objects.create(user=user)

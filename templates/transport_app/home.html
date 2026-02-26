@@ -2,8 +2,10 @@
 {% load static %}
 
 {% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 <div class="row align-items-center py-5">
-    <div class="col-lg-7 text-center text-lg-start mb-5 mb-lg-0 animate__animated animate__fadeInLeft">
+    <div class="col-lg-7 text-center text-lg-start mb-5 mb-lg-0 animate__animated animate__fadeInLeft ps-lg-5">
         <h1 class="display-3 fw-bold mb-4 text-blue">Safe and Reliable Transport</h1>
         <p class="lead mb-5 text-blue-50">
             We take pride in providing a well-organized transport service ensuring a comfortable journey 
@@ -14,14 +16,14 @@
                 <a href="{% url 'register' %}" class="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-lg fw-bold">Get Started</a>
                 <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-lg px-5 py-3 rounded-pill fw-bold">Login</a>
             {% else %}
-                <a href="{% url 'schedule' %}" class="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-lg">View Schedule</a>
+                <a href="{% url 'schedule' %}" class="btn-schedule btn-lg px-5 py-3 rounded-pill shadow-lg">View Schedule</a>
             {% endif %}
         </div>
     </div>
     
     <div class="col-lg-5 text-center animate__animated animate__zoomIn">
-        <img src="{% static 'images/CTMS.png' %}" alt="Campus Transport Illustration" 
-             class="img-fluid rounded-4 shadow-lg border border-white border-opacity-25" 
+        <img src="{% static 'images/bus11.png' %}" alt="Campus Transport Illustration" 
+             class="img-fluid   border-opacity-0" 
              style="max-height: 400px; width: auto;">
     </div>
 </div>

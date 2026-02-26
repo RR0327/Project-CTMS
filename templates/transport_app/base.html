@@ -39,7 +39,7 @@
                         <li class="nav-item ms-lg-2">
                             <form method="post" action="{% url 'logout_user' %}" class="d-inline">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-4">Logout</button>
+                                <button type="submit" class="btn btn-outline-primary btn-schedule btn-sm rounded-pill px-4">Logout</button>
                             </form>
                         </li>
                     {% else %}

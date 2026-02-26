@@ -9,20 +9,20 @@
         </h2>
         
         <div class="d-flex flex-wrap gap-2 justify-content-center">
-            <a href="{% url 'export_pdf' %}" class="btn btn-danger shadow-sm px-3 rounded-pill">
+            <a href="{% url 'export_pdf' %}" class="btn btn-primary shadow-sm px-3 rounded-pill">
                 <i class="fas fa-file-pdf me-2"></i>Export PDF
             </a>
 
             <div class="input-group shadow-sm" style="max-width: 250px;">
-                <span class="input-group-text bg-dark border-secondary text-black-50"><i class="fas fa-search"></i></span>
-                <input type="text" id="routeSearch" class="form-control bg-dark text-black border-secondary" 
+                <span class="input-group-text bg-white border-secondary text-black-50"><i class="fas fa-search"></i></span>
+                <input type="text" id="routeSearch" class="form-control bg-white text-black border-secondary" 
                        placeholder="Search route..." onkeyup="searchTable()">
             </div>
             
             <div class="btn-group shadow" role="group">
-                <button type="button" class="btn btn-outline-primary active" onclick="filterTrips('ALL', this)">All</button>
-                <button type="button" class="btn btn-outline-success" onclick="filterTrips('UP', this)">Up</button>
-                <button type="button" class="btn btn-outline-warning" onclick="filterTrips('DOWN', this)">Down</button>
+                <button type="button" class="btn btn-outline-light active" onclick="filterTrips('ALL', this)">All</button>
+                <button type="button" class="btn btn-outline-light " onclick="filterTrips('UP', this)">Up</button>
+                <button type="button" class="btn btn-outline-light " onclick="filterTrips('DOWN', this)">Down</button>
             </div>
         </div>
     </div>
@@ -30,16 +30,16 @@
     <div class="row mb-5 g-4">
         <div class="col-md-6 trip-row-card" data-type="UP">
             <div class="glass-panel p-4 border-start border-success border-4 h-100">
-                <h5 class="text-success fw-bold"><i class="fas fa-arrow-up me-2"></i>Daily Up-Trip Routine (To Campus)</h5>
+                <h5 class="text-blue fw-bold"><i class="fas fa-arrow-up me-2"></i>Daily Up-Trip Routine (To Campus)</h5>
                 <ul class="list-unstyled text-blue-50 small mt-3">
-                    <li><i class="fas fa-clock me-2 text-success"></i><strong>07:30 AM:</strong> Town to Campus (Staff)</li>
-                    <li><i class="fas fa-clock me-2 text-success"></i><strong>08:15 AM:</strong> Town to Campus (Student)</li>
+                    <li><i class="fas fa-clock me-2 text-warning"></i><strong>07:30 AM:</strong> Town to Campus (Staff)</li>
+                    <li><i class="fas fa-clock me-2 text-warning"></i><strong>08:15 AM:</strong> Town to Campus (Student)</li>
                 </ul>
             </div>
         </div>
         <div class="col-md-6 trip-row-card" data-type="DOWN">
             <div class="glass-panel p-4 border-start border-warning border-4 h-100">
-                <h5 class="text-warning fw-bold"><i class="fas fa-arrow-down me-2"></i>Daily Down-Trip Routine (From Campus)</h5>
+                <h5 class="text-blue fw-bold"><i class="fas fa-arrow-down me-2"></i>Daily Down-Trip Routine (From Campus)</h5>
                 <ul class="list-unstyled text-blue-50 small mt-3">
                     <li><i class="fas fa-clock me-2 text-warning"></i><strong>02:00 PM:</strong> Campus to Town (Student)</li>
                     <li><i class="fas fa-clock me-2 text-warning"></i><strong>04:30 PM:</strong> Campus to Town (Staff)</li>

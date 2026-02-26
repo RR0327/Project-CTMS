@@ -2,7 +2,7 @@
 
 /* 1. Global Setup */
 body {
-    background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), 
+    background: linear-gradient(rgba(40, 52, 86, 0.763), rgba(57, 69, 195, 0.75)), 
                 url('../images/hero3.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #ffffff;
@@ -11,10 +11,19 @@ body {
     display: flex;
     flex-direction: column; /* Crucial for footer positioning */
 }
+.btn-schedule {
+    background-color: #7449c3;  /* Purple */
+    color: white;
+    border: none;
+}
 
+.btn-schedule:hover {
+    background-color: #8668c7;
+    color: white;
+}
 /* 2. Glassmorphism Design System */
 .glass-nav {
-    background: rgba(255, 255, 255, 0.03) !important;
+    background: rgba(6, 0, 0, 0.03) !important;
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -52,7 +61,7 @@ body {
 
 /* 4. Footer & Social Hover Effects */
 .footer-glass {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.4) !important; 
     backdrop-filter: blur(10px);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     color: #ffffff;
